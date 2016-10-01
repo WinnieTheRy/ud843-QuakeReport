@@ -2,12 +2,15 @@ package com.example.android.quakereport;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.graphics.drawable.GradientDrawable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +18,11 @@ import java.util.ArrayList;
  */
 
 public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
+
+    private String splitLocationOffset;
+    private String splitPirmaryLocation;
+
+    private static final String LOCATION_SEPERATOR = " of";
 
     //Conctructor
     //This is our own custom constructor (it doesn't mirror a superclass constructor).
@@ -35,7 +43,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
 
         //used to populate empty list items on startup
         View listItemView = convertView;
-        if(listItemView == null){
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_for_list_view, parent, false);
         }
 
@@ -44,11 +52,42 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
 
         //Setting the magnitude to a textview
         TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude_text_view);
-        magnitudeTextView.setText(Double.toString(currentEarthquake.getmMagnitude()));
+        magnitudeTextView.setText(formatMagnitude(currentEarthquake.getmMagnitude()));
 
-        //setting the location to a textView
-        TextView locationTextView = (TextView) listItemView.findViewById(R.id.location_text_view);
-        locationTextView.setText(currentEarthquake.getmCityName());
+        // Set the proper background color on the magnitude circle.
+        // Fetch the background from the TextView, which is a GradientDrawable.
+        GradientDrawable magnitudeCircleColor = (GradientDrawable) magnitudeTextView.getBackground();
+
+        // Get the appropriate background color based on the current earthquake magnitude value
+        int magnitudeColor = getMagnitudeColor(currentEarthquake.getmMagnitude());
+
+        magnitudeCircleColor.setColor(magnitudeColor);
+
+        if (currentEarthquake.getmCityName().contains(LOCATION_SEPERATOR)) {
+            //Splitting the string at the of position, and assigning it to an array
+            String[] split = currentEarthquake.getmCityName().split(LOCATION_SEPERATOR);
+
+            //Assinging the fist half of the string to split[0]
+            splitLocationOffset = split[split.length - 2] + LOCATION_SEPERATOR;
+
+            //Assinging the second half of the string to split[1]
+            splitPirmaryLocation = split[split.length - 1];
+        } else {
+            //since there is no "of" we assign location ofset to "Near the" and
+            //just set the prmary location to the city name
+            splitLocationOffset = getContext().getString(R.string.near_the);
+
+            //Assinging the second half of the string to the location
+            splitPirmaryLocation = currentEarthquake.getmCityName();
+        }
+
+        //Setting the offset location to a textview
+        TextView locationOffsetTextView = (TextView) listItemView.findViewById(R.id.location_offset_text_view);
+        locationOffsetTextView.setText(splitLocationOffset);
+
+        //setting the primary location to a textView
+        TextView primaryLocationTextView = (TextView) listItemView.findViewById(R.id.primary_location_text_view);
+        primaryLocationTextView.setText(splitPirmaryLocation);
 
         //setting the date to a textView
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.date_text_view);
@@ -57,4 +96,66 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         //All for a sing list Item inside the arrayList
         return listItemView;
     }
+
+    private String formatMagnitude(Double magnitude) {
+        //instantiate the DecimalFormatter class to format decimals with two digits, one decimal place
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+
+        //formats the decimal to have two digits
+        return decimalFormat.format(magnitude);
+    }
+
+    private String formatMagnitudeColor(double magnitude) {
+        DecimalFormat formater = new DecimalFormat("0");
+
+        return formater.format(magnitude);
+    }
+
+    private int getMagnitudeColor(double magnitude) {
+        int magnitudeColorResourceId = 0;
+
+        //The Math.floor() function returns the largest integer less than or equal to a given number.
+        //ex: 45.96 = 45
+        int value = (int) Math.floor(magnitude);
+
+        switch (Integer.parseInt(formatMagnitudeColor(magnitude))) {
+
+            case 0:
+            case 1:
+                magnitudeColorResourceId = R.color.magnitude1;
+                break;
+            case 2:
+                magnitudeColorResourceId = R.color.magnitude2;
+                break;
+            case 3:
+                magnitudeColorResourceId = R.color.magnitude3;
+                break;
+            case 4:
+                magnitudeColorResourceId = R.color.magnitude4;
+                break;
+            case 5:
+                magnitudeColorResourceId = R.color.magnitude5;
+                break;
+            case 6:
+                magnitudeColorResourceId = R.color.magnitude6;
+                break;
+            case 7:
+                magnitudeColorResourceId = R.color.magnitude7;
+                break;
+            case 8:
+                magnitudeColorResourceId = R.color.magnitude8;
+                break;
+            case 9:
+                magnitudeColorResourceId = R.color.magnitude9;
+                break;
+            case 10:
+                magnitudeColorResourceId = R.color.magnitude10plus;
+                break;
+
+        }
+
+        //get Context : Returns the context the view is currently running in. Usually the currently active Activity.
+        return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
+    }
+
 }
