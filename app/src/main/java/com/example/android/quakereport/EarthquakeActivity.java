@@ -63,7 +63,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     private void openBrowser(String url) {
 
-        //conver the string into a URI object
+        //convert the string into a URI object
         Uri webPage = Uri.parse(url);
 
         Intent webpageIntent = new Intent(Intent.ACTION_VIEW, webPage);
