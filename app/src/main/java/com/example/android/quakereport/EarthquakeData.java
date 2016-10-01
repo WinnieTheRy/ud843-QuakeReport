@@ -10,15 +10,17 @@ public class EarthquakeData {
 
     private String mCityName;
 
-    private String mDate;
+    private long mTimeInMIllisSeconds;
 
+    private String mURL;
 
     //Constructor
-    public EarthquakeData(double magnitude, String cityName, String date){
+    public EarthquakeData(double magnitude, String cityName, long timeInMillisSeconds, String URL){
 
         mMagnitude = magnitude;
         mCityName = cityName;
-        mDate = date;
+        mTimeInMIllisSeconds = timeInMillisSeconds;
+        mURL = URL;
 
     }
 
@@ -31,21 +33,12 @@ public class EarthquakeData {
         return mCityName;
     }
 
-    public String getmDate() {
-        return mDate;
+    public long getmTimeinMillisSeconds() {
+        return mTimeInMIllisSeconds;
     }
 
-    //setter methods
-    public void setmDate(String mDate) {
-        this.mDate = mDate;
-    }
-
-    public void setmMagnitude(double mMagnitude) {
-        this.mMagnitude = mMagnitude;
-    }
-
-    public void setmCityName(String mCityName) {
-        this.mCityName = mCityName;
+    public String getURL() {
+        return mURL;
     }
 
 }

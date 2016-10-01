@@ -10,8 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.graphics.drawable.GradientDrawable;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by RyanHaniff on 2016-09-26.
@@ -89,12 +92,28 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         TextView primaryLocationTextView = (TextView) listItemView.findViewById(R.id.primary_location_text_view);
         primaryLocationTextView.setText(splitPirmaryLocation);
 
+        Date dateObject = new Date(currentEarthquake.getmTimeinMillisSeconds());
+
         //setting the date to a textView
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.date_text_view);
-        dateTextView.setText(currentEarthquake.getmDate());
+        dateTextView.setText(formatDate(dateObject));
+
+        //setting the time to a textView with helper methode
+        TextView timeTextView = (TextView) listItemView.findViewById(R.id.time_text_view);
+        timeTextView.setText(formatTime(dateObject));
 
         //All for a sing list Item inside the arrayList
         return listItemView;
+    }
+
+    private String formatDate(Date date){
+        SimpleDateFormat formatDate = new SimpleDateFormat("MMM DD, yyyy");
+        return formatDate.format(date);
+    }
+
+    private String formatTime(Date time){
+        SimpleDateFormat formatTime = new SimpleDateFormat("h:mm a");
+        return formatTime.format(time);
     }
 
     private String formatMagnitude(Double magnitude) {
@@ -105,6 +124,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         return decimalFormat.format(magnitude);
     }
 
+    //used to convert one decimal placing into single digit to be used as switch value
     private String formatMagnitudeColor(double magnitude) {
         DecimalFormat formater = new DecimalFormat("0");
 
@@ -118,7 +138,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         //ex: 45.96 = 45
         int value = (int) Math.floor(magnitude);
 
-        switch (Integer.parseInt(formatMagnitudeColor(magnitude))) {
+        switch (value) {
 
             case 0:
             case 1:
@@ -154,7 +174,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
 
         }
 
-        //get Context : Returns the context the view is currently running in. Usually the currently active Activity.
+        //get Context: Returns the context the view is currently running in. Usually the currently active Activity.
         return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
     }
 

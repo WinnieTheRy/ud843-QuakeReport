@@ -6,10 +6,8 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -75,14 +73,11 @@ public class QueryUtils {
                 String place = propertiesJsonObject.optString("place");
                 //using long since unix time is at 13 digits
                 long time = propertiesJsonObject.optLong("time");
-
-                //converting the unix time into date and time that user can read
-                Date dateObject = new Date(time);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM DD, yyyy\nh:mm a");
-                String date = simpleDateFormat.format(dateObject);
+                //get the url of each earthquke
+                String url = propertiesJsonObject.optString("url");
 
                 //adding the date,time and place value to the earthqaukedatas
-                earthquakes.add(new EarthquakeData(magnitude, place, date));
+                earthquakes.add(new EarthquakeData(magnitude, place, time, url));
             }
 
         } catch (JSONException e) {
