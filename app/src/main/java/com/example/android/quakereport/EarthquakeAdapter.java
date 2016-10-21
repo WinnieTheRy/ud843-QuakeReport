@@ -77,7 +77,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
             splitPirmaryLocation = split[split.length - 1];
         } else {
             //since there is no "of" we assign location ofset to "Near the" and
-            //just set the prmary location to the city name
+            //just set the primary location to the city name
             splitLocationOffset = getContext().getString(R.string.near_the);
 
             //Assinging the second half of the string to the location
@@ -175,6 +175,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         }
 
         //get Context: Returns the context the view is currently running in. Usually the currently active Activity.
+        //converts the resource id into a color resource id
         return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
     }
 
