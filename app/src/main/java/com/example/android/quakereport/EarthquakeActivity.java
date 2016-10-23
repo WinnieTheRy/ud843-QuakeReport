@@ -17,6 +17,7 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,38 +29,67 @@ import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
+    /*TODO: make a inner class for the async tasks
+      TODO: make a global variable for the url
+      TODO: modify android manifest for connecting to the internet
+     */
+
+
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
+    public static final String USGS_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        final ArrayList<EarthquakeData> earthquakeDatas = QueryUtils.extractEarthquakes();
+        //final ArrayList<EarthquakeData> earthquakeDatas = QueryUtils.extractEarthquakes();
 
-        // Find a reference to the {@link ListView} in the layout
-        //Shows a list of items on screen such as the names of each city
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        BackgroundNetworkConnection backgroundNetworkCOnnection = new BackgroundNetworkConnection();
+        backgroundNetworkCOnnection.execute(USGS_URL);
 
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //find the current earthquake that was clicked on
-                EarthquakeData earthquakePositionInList = earthquakeDatas.get(position);
-
-                //Calls the helper methode openBroser to send the string url into it
-                openBrowser(earthquakePositionInList.getURL());
-            }
-        });
-
-        //custom adapter for the custom list items to be displayed in the listView
-        EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakeDatas);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
     }
+
+    private class BackgroundNetworkConnection extends AsyncTask<String, Void, ArrayList<EarthquakeData>> {
+
+
+        @Override
+        protected ArrayList<EarthquakeData> doInBackground(String... url) {
+
+            if (url.length < 1 || url == null) {
+                return null;
+            }
+
+            ArrayList<EarthquakeData> earthquake = QueryUtils.fetchEarthquakeData(url[0]);
+            return earthquake;
+        }
+
+        @Override
+        protected void onPostExecute(final ArrayList<EarthquakeData> earthquakeDatas) {
+
+            ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+            earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    //find the current earthquake that was clicked on
+                    EarthquakeData earthquakePositionInList = earthquakeDatas.get(position);
+
+                    //Calls the helper methode openBroser to send the string url into it
+                    openBrowser(earthquakePositionInList.getURL());
+                }
+            });
+
+            EarthquakeAdapter adapter = new EarthquakeAdapter(EarthquakeActivity.this, earthquakeDatas);
+
+            earthquakeListView.setAdapter(adapter);
+
+
+        }
+    }
+
 
     private void openBrowser(String url) {
 
