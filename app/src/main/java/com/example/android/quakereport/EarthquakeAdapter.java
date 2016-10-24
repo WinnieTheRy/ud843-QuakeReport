@@ -92,6 +92,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         TextView primaryLocationTextView = (TextView) listItemView.findViewById(R.id.primary_location_text_view);
         primaryLocationTextView.setText(splitPirmaryLocation);
 
+        //Gets the unix time in miliseconds
         Date dateObject = new Date(currentEarthquake.getmTimeinMillisSeconds());
 
         //setting the date to a textView
