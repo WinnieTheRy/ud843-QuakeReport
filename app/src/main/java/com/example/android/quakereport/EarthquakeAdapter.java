@@ -98,7 +98,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.date_text_view);
         dateTextView.setText(formatDate(dateObject));
 
-        //setting the time to a textView with helper methode
+        //setting the time to a textView with helper method
         TextView timeTextView = (TextView) listItemView.findViewById(R.id.time_text_view);
         timeTextView.setText(formatTime(dateObject));
 
@@ -107,7 +107,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
     }
 
     private String formatDate(Date date){
-        SimpleDateFormat formatDate = new SimpleDateFormat("MMM DD, yyyy");
+        SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
         return formatDate.format(date);
     }
 
