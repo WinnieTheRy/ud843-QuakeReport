@@ -107,18 +107,20 @@ public class QueryUtils {
 
         StringBuilder stringBuilder = null;
 
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
-        //takes the inputstream and is able to cycle through more characters
-        BufferedReader reader = new BufferedReader(inputStreamReader);
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            //takes the inputstream and is able to cycle through more characters
+            BufferedReader reader = new BufferedReader(inputStreamReader);
 
-        String line = reader.readLine();
+            String line = reader.readLine();
 
-        //use a while loop to loop through the buffered reader to get all the data
-        while (line != null) {
-            stringBuilder.append(line);
+            //use a while loop to loop through the buffered reader to get all the data
+            while (line != null) {
+                stringBuilder.append(line);
 
-            //use this line of code as a check to make sure we dont go into an infinite loop
-            line = reader.readLine();
+                //use this line of code as a check to make sure we dont go into an infinite loop
+                line = reader.readLine();
+            }
         }
 
         return stringBuilder.toString();

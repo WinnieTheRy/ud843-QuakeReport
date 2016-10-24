@@ -49,6 +49,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new EarthquakeAdapter(this, new ArrayList<EarthquakeData>());
 
+        //poplate the listview with the Arraylist adapter class
         earthquakeListView.setAdapter(mAdapter);
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
