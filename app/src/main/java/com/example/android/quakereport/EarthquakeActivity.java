@@ -97,7 +97,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(Loader<List<EarthquakeData>> loader) {
-
+        mAdapter.clear();
     }
 
 //    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {
