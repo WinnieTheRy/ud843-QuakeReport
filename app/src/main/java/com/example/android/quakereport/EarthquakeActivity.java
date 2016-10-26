@@ -15,13 +15,15 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +33,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<EarthquakeData>>{
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<EarthquakeData>> {
 
     /*TODO: make a inner class for the async tasks
       TODO: make a global variable for the url
@@ -65,32 +67,57 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                EarthquakeData earthquakePositionInList = mAdapter.getItem(position);
 
+                openBrowser(earthquakePositionInList.getURL());
 
             }
         });
 
+        getLoaderManager().initLoader(0, null, this);
+
 
     }
 
-    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {
+    @Override
+    public Loader<List<EarthquakeData>> onCreateLoader(int id, Bundle args) {
+        return new EarthquakeLoader(this);
+    }
 
+    @Override
+    public void onLoadFinished(Loader<List<EarthquakeData>> loader, List<EarthquakeData> data) {
 
-        public BackgroundNetworkConnection(Context context) {
-            super(context);
+        mAdapter.clear();
+
+        if (data != null) {
+            mAdapter.addAll(data);
         }
 
-        @Override
-        public ArrayList<EarthquakeData> loadInBackground() {
+    }
 
-            if (USGS_URL == null) {
-                return null;
-            }
+    @Override
+    public void onLoaderReset(Loader<List<EarthquakeData>> loader) {
 
-            ArrayList<EarthquakeData> earthquakeList = QueryUtils.fetchEarthquakeData(USGS_URL);
+    }
 
-            return earthquakeList;
-        }
+//    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {
+//
+//
+//        public BackgroundNetworkConnection(Context context) {
+//            super(context);
+//        }
+//
+//        @Override
+//        public ArrayList<EarthquakeData> loadInBackground() {
+//
+//            if (USGS_URL == null) {
+//                return null;
+//            }
+//
+//            ArrayList<EarthquakeData> earthquakeList = QueryUtils.fetchEarthquakeData(USGS_URL);
+//
+//            return earthquakeList;
+//        }
 
 //        @Override
 //        protected ArrayList<EarthquakeData> doInBackground(String... url) {
@@ -103,32 +130,32 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 //            return earthquake;
 //        }
 //
-        @Override
-        protected void onPostExecute(final ArrayList<EarthquakeData> earthquakeDatas) {
-
-            ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
-            earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    //find the current earthquake that was clicked on
-                    EarthquakeData earthquakePositionInList = earthquakeDatas.get(position);
-
-                    //Calls the helper methode openBroser to send the string url into it
-                    openBrowser(earthquakePositionInList.getURL());
-                }
-            });
-
-            EarthquakeAdapter adapter = new EarthquakeAdapter(EarthquakeActivity.this, earthquakeDatas);
-
-            if (earthquakeDatas != null) {
-                earthquakeListView.setAdapter(adapter);
-            }
-
-
-        }
-    }
+//        @Override
+//        protected void onPostExecute(final ArrayList<EarthquakeData> earthquakeDatas) {
+//
+//            ListView earthquakeListView = (ListView) findViewById(R.id.list);
+//
+//            earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                    //find the current earthquake that was clicked on
+//                    EarthquakeData earthquakePositionInList = earthquakeDatas.get(position);
+//
+//                    //Calls the helper methode openBroser to send the string url into it
+//                    openBrowser(earthquakePositionInList.getURL());
+//                }
+//            });
+//
+//            EarthquakeAdapter adapter = new EarthquakeAdapter(EarthquakeActivity.this, earthquakeDatas);
+//
+//            if (earthquakeDatas != null) {
+//                earthquakeListView.setAdapter(adapter);
+//            }
+//
+//
+//        }
+//    }
 
 
     private void openBrowser(String url) {

@@ -1,8 +1,5 @@
 package com.example.android.quakereport;
 
-/**
- * Created by RyanHaniff on 2016-09-26.
- */
 
 public class EarthquakeData {
 
