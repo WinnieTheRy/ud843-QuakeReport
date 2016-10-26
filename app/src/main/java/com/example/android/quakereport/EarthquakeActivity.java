@@ -15,10 +15,13 @@
  */
 package com.example.android.quakereport;
 
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,8 +29,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<EarthquakeData>>{
 
     /*TODO: make a inner class for the async tasks
       TODO: make a global variable for the url
@@ -37,10 +41,9 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
-    public static final String USGS_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    public static final String USGS_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
 
-
-
+    EarthquakeAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,25 +52,57 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         //final ArrayList<EarthquakeData> earthquakeDatas = QueryUtils.extractEarthquakes();
 
-        BackgroundNetworkConnection backgroundNetworkCOnnection = new BackgroundNetworkConnection();
-        backgroundNetworkCOnnection.execute(USGS_URL);
+//        BackgroundNetworkConnection backgroundNetworkCOnnection = new BackgroundNetworkConnection();
+//        backgroundNetworkCOnnection.execute(USGS_URL);
+
+        ListView listView = (ListView) findViewById(R.id.list);
+
+        mAdapter = new EarthquakeAdapter(this, new ArrayList<EarthquakeData>());
+
+        listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+            }
+        });
+
 
     }
 
-    private class BackgroundNetworkConnection extends AsyncTask<String, Void, ArrayList<EarthquakeData>> {
+    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {
 
+
+        public BackgroundNetworkConnection(Context context) {
+            super(context);
+        }
 
         @Override
-        protected ArrayList<EarthquakeData> doInBackground(String... url) {
+        public ArrayList<EarthquakeData> loadInBackground() {
 
-            if (url.length < 1 || url == null) {
+            if (USGS_URL == null) {
                 return null;
             }
 
-            ArrayList<EarthquakeData> earthquake = QueryUtils.fetchEarthquakeData(url[0]);
-            return earthquake;
+            ArrayList<EarthquakeData> earthquakeList = QueryUtils.fetchEarthquakeData(USGS_URL);
+
+            return earthquakeList;
         }
 
+//        @Override
+//        protected ArrayList<EarthquakeData> doInBackground(String... url) {
+//
+//            if (url.length < 1 || url == null) {
+//                return null;
+//            }
+//
+//            ArrayList<EarthquakeData> earthquake = QueryUtils.fetchEarthquakeData(url[0]);
+//            return earthquake;
+//        }
+//
         @Override
         protected void onPostExecute(final ArrayList<EarthquakeData> earthquakeDatas) {
 
@@ -87,7 +122,9 @@ public class EarthquakeActivity extends AppCompatActivity {
 
             EarthquakeAdapter adapter = new EarthquakeAdapter(EarthquakeActivity.this, earthquakeDatas);
 
-            earthquakeListView.setAdapter(adapter);
+            if (earthquakeDatas != null) {
+                earthquakeListView.setAdapter(adapter);
+            }
 
 
         }
