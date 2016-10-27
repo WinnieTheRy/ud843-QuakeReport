@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -44,9 +45,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     public static final String USGS_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
 
-    EarthquakeAdapter mAdapter;
+    private EarthquakeAdapter mAdapter;
 
-    TextView mEmptyStateTextView;
+    private TextView mEmptyStateTextView;
+
+    private ProgressBar mSpinnerProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +80,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         getLoaderManager().initLoader(0, null, this);
 
+        //sets a text display if there is not list items to update
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         listView.setEmptyView(mEmptyStateTextView);
 
+        mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mSpinnerProgressBar.setVisibility(View.VISIBLE);
 
         Log.v(LOG_TAG, "TEST: OnCreate methode");
 
@@ -90,7 +96,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         Log.v(LOG_TAG, "TEST: onCreateLoader methode");
 
+        //sets the progressbar to be visible
+        //mSpinnerProgressBar.setVisibility(View.VISIBLE);
+
         return new EarthquakeLoader(this, USGS_URL);
+
 
 
     }
@@ -101,8 +111,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         mAdapter.clear();
 
         if (data != null) {
-            mAdapter.addAll(data);
+            //mAdapter.addAll(data);
         }
+
+        //set progress bar to invisible when finshed loading data
+        mSpinnerProgressBar.setVisibility(View.INVISIBLE);
 
         mEmptyStateTextView.setText(R.string.no_earthquake);
 

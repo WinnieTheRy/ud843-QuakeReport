@@ -55,6 +55,13 @@ public class QueryUtils {
         Log.v(LOG_TAG, "TEST: fetchEarthquakeData methode");
 
         try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
             jsonResponse = makeHTTPConnection(url);
 
         } catch (IOException e) {
