@@ -21,14 +21,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.content.AsyncTaskLoader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public static final String USGS_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
 
     EarthquakeAdapter mAdapter;
+
+    TextView mEmptyStateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +77,22 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         getLoaderManager().initLoader(0, null, this);
 
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        listView.setEmptyView(mEmptyStateTextView);
+
+
+        Log.v(LOG_TAG, "TEST: OnCreate methode");
 
     }
 
     @Override
     public Loader<List<EarthquakeData>> onCreateLoader(int id, Bundle args) {
-        return new EarthquakeLoader(this);
+
+        Log.v(LOG_TAG, "TEST: onCreateLoader methode");
+
+        return new EarthquakeLoader(this, USGS_URL);
+
+
     }
 
     @Override
@@ -93,11 +104,17 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             mAdapter.addAll(data);
         }
 
+        mEmptyStateTextView.setText(R.string.no_earthquake);
+
+        Log.v(LOG_TAG, "TEST: onLoadFinished methode");
+
     }
 
     @Override
     public void onLoaderReset(Loader<List<EarthquakeData>> loader) {
         mAdapter.clear();
+
+        Log.v(LOG_TAG, "TEST: onLoaderReset methode");
     }
 
 //    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {

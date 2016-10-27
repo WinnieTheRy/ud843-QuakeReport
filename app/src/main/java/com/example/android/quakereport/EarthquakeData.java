@@ -1,7 +1,11 @@
 package com.example.android.quakereport;
 
 
+import android.util.Log;
+
 public class EarthquakeData {
+
+    private static final String LOG_TAG = EarthquakeData.class.getName();
 
     private double mMagnitude;
 
@@ -19,6 +23,7 @@ public class EarthquakeData {
         mTimeInMIllisSeconds = timeInMillisSeconds;
         mURL = URL;
 
+        Log.v(LOG_TAG, "TEST: EarthqaukeData Contructor");
     }
 
     //getter methods

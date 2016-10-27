@@ -52,8 +52,11 @@ public class QueryUtils {
 
         URL url = makeURL(requestUrl);
 
+        Log.v(LOG_TAG, "TEST: fetchEarthquakeData methode");
+
         try {
             jsonResponse = makeHTTPConnection(url);
+
         } catch (IOException e) {
             Log.i(LOG_TAG, "Error closing input stream", e);
         }
@@ -73,6 +76,7 @@ public class QueryUtils {
             Log.i(LOG_TAG, "url malformed exception", e);
         }
 
+        Log.v(LOG_TAG, "TEST: makeURL methode");
         return url;
     }
 
@@ -101,7 +105,7 @@ public class QueryUtils {
             }
 
         } catch (IOException e) {
-            Log.i(LOG_TAG, "error creating url Connection", e);
+            Log.i(LOG_TAG, "TEST: error creating url Connection", e);
         } finally {
 
             if (urlConnection != null) {
@@ -112,6 +116,8 @@ public class QueryUtils {
                 inputStream.close();
             }
         }
+
+        Log.v(LOG_TAG, "TEST: makeHTTPConnection methode");
 
         return jsonResponse;
 
@@ -132,6 +138,8 @@ public class QueryUtils {
                 line = reader.readLine();
             }
         }
+
+        Log.v(LOG_TAG, "TEST: readFromInputStream methode");
         return output.toString();
     }
 
@@ -182,6 +190,8 @@ public class QueryUtils {
         }
 
         // Return the list of earthquakes to the arraylist
+
+        Log.v(LOG_TAG, "TEST: extractEarthquakes methode");
         return earthquakes;
     }
 

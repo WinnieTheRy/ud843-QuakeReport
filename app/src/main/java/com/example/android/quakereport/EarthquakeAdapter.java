@@ -3,6 +3,7 @@ package com.example.android.quakereport;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
 
     private String splitLocationOffset;
     private String splitPirmaryLocation;
+
+    private static final String LOG_TAG = EarthquakeAdapter.class.getName();
 
     private static final String LOCATION_SEPERATOR = " of";
 
@@ -48,6 +51,7 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_for_list_view, parent, false);
+            Log.v(LOG_TAG, "TEST: listItem layout inflater to infalte empty list items");
         }
 
         // Get the {@link EarthquakeData} object located at this position in the list
@@ -101,6 +105,8 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
         //setting the time to a textView with helper method
         TextView timeTextView = (TextView) listItemView.findViewById(R.id.time_text_view);
         timeTextView.setText(formatTime(dateObject));
+
+        Log.v(LOG_TAG, "TEST: getView methode");
 
         //All for a sing list Item inside the arrayList
         return listItemView;
