@@ -54,11 +54,12 @@ public class QueryUtils {
 
         Log.v(LOG_TAG, "TEST: fetchEarthquakeData methode");
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //used to pause the background thread to show the progress bar for testing
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
 
         try {

@@ -51,8 +51,6 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     private TextView mEmptyStateTextView;
 
-    private ProgressBar mSpinnerProgressBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,14 +83,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         //if we are connected to internet run this
         if (networkInfo != null && networkInfo.isConnected()) {
-
-            //sets the progressbar to be visible
-            mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-            mSpinnerProgressBar.setVisibility(View.VISIBLE);
             getLoaderManager().initLoader(0, null, this);
         } else {
             //set the spinner loader to invisible so error message will be visible
-            mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+            ProgressBar mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
             mSpinnerProgressBar.setVisibility(View.GONE);
 
             //setting text to "No network connection"
@@ -109,10 +103,6 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         Log.v(LOG_TAG, "TEST: onCreateLoader methode");
 
-//        //sets the progressbar to be visible
-//        mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-//        mSpinnerProgressBar.setVisibility(View.VISIBLE);
-
         return new EarthquakeLoader(this, USGS_URL);
 
 
@@ -124,12 +114,14 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         mAdapter.clear();
 
         if (data != null) {
-            //mAdapter.addAll(data);
+            mAdapter.addAll(data);
         }
 
-//        //set progress bar to invisible when finshed loading data
-//        mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-//        mSpinnerProgressBar.setVisibility(View.GONE);
+        //set progress bar to invisible when finshed loading data
+        //remember that the prgress bar is always being displayed unless
+        // we set visibility to gone
+        ProgressBar mSpinnerProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mSpinnerProgressBar.setVisibility(View.GONE);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         mEmptyStateTextView.setText(R.string.no_earthquake);
