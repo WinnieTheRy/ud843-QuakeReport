@@ -26,6 +26,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -137,7 +139,27 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         Log.v(LOG_TAG, "TEST: onLoaderReset methode");
     }
 
-//    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {
+    //Menu Item:
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //inflates the ico at the top right
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //    private class BackgroundNetworkConnection extends AsyncTaskLoader<ArrayList<EarthquakeData>> {
 //
 //
 //        public BackgroundNetworkConnection(Context context) {
