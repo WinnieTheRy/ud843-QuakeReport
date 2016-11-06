@@ -116,6 +116,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         Uri baseUri = Uri.parse(USGS_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
+        //builds the url to what we want
         uriBuilder.appendQueryParameter("format", "geojson");
         uriBuilder.appendQueryParameter("limit", "10");
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
