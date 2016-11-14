@@ -15,6 +15,7 @@
  */
 package com.example.android.quakereport;
 
+import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -100,6 +101,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         Log.v(LOG_TAG, "TEST: OnCreate methode");
 
+
     }
 
     @Override
@@ -168,8 +170,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        if (id == R.id.action_settings) { //the id of the item in the menu xml
+            Intent settingsIntent = new Intent(this, SettingsActivity.class); //starts the settings activity class when the icon is clicked
             startActivity(settingsIntent);
             return true;
         }

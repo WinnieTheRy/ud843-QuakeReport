@@ -21,7 +21,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthquakeData>> {
 
     @Override
     protected void onStartLoading() {
-        forceLoad();
+        forceLoad(); //forces load in background to be called
 
         Log.v(LOG_TAG, "TEST: onSTartLoading methode");
     }
