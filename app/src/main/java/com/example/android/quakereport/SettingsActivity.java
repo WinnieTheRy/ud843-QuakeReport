@@ -1,6 +1,7 @@
 package com.example.android.quakereport;
 
 import android.content.SharedPreferences;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -28,18 +29,37 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
 
+            /*Given the key of a preference, we can use PreferenceFragment's findPreference() method
+            to get the Preference object, and setup the preference using a helper method
+            called bindPreferenceSummaryToValue().*/
             Preference minMagnitude = findPreference(getString(R.string.settings_min_magnitude_key));
             bindPreferenceSummaryToValue(minMagnitude);
+
+            Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
+            bindPreferenceSummaryToValue(orderBy);
         }
 
         @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-            String stringValue = newValue.toString();
-            preference.setSummary(stringValue);
+        public boolean onPreferenceChange(Preference preference, Object value) {
+            String stringValue = value.toString();
+            if (preference instanceof ListPreference) {
+                ListPreference listPreference = (ListPreference) preference;
+                int prefIndex = listPreference.findIndexOfValue(stringValue);
+                if (prefIndex >= 0) {
+                    CharSequence[] labels = listPreference.getEntries();
+                    preference.setSummary(labels[prefIndex]);
+                }
+            } else {
+                preference.setSummary(stringValue);
+            }
             return true;
         }
 
+
+        /*Now we need to define the bindPreferenceSummaryToValue() helper method to set the current
+        // EarhtquakePreferenceFragment instance as the listener on each preference. We also read the current value of the
+        // preference stored in the SharedPreferences on the device, and display that in the preference summary
+        (so that the user can see the current value of the preference).*/
         private void bindPreferenceSummaryToValue(Preference preference) {
             preference.setOnPreferenceChangeListener(this);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
@@ -48,7 +68,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
     }
-
 
 
 }

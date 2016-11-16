@@ -115,6 +115,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                 getString(R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
 
+        String orderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
         Uri baseUri = Uri.parse(USGS_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
@@ -162,7 +166,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     //Menu Item:
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //inflates the ico at the top right
+        //inflates the icon at the top right
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

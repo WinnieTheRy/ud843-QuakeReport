@@ -4,7 +4,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.android.quakereport.EarthquakeActivity">
 
-    <!--this is the ico we display that the user can click on the top right -->
+    <!--this is the icon we display that the user can click on the top right -->
 
     <item
         android:id="@+id/action_settings"
