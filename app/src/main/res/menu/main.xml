@@ -5,13 +5,12 @@
       tools:context="com.example.android.quakereport.EarthquakeActivity">
 
     <!--this is the icon we display that the user can click on the top right -->
-
+    <!--The android:title is the name we give the icon so if we had more settings to be displayed the user can click on the one they want-->
+    <!--The app:showAsAction is used to show the item next to the other items or in a list if there a multiple items-->
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_filter"
         android:orderInCategory="1"
         android:title="@string/settings_menu_item"
-        app:showAsAction="ifRoom"
-
-        />
+        app:showAsAction="ifRoom"/>
 </menu>
