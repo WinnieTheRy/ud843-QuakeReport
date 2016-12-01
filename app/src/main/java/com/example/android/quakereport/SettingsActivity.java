@@ -39,9 +39,19 @@ public class SettingsActivity extends AppCompatActivity {
             bindPreferenceSummaryToValue(orderBy);
         }
 
+
+        /**
+         * Called when a Preference has been changed by the user. This is
+         * called before the state of the Preference is about to be updated and
+         * before the state is persisted.
+         *
+         * @param preference The changed Preference.
+         * @param value The new value of the Preference.
+         * @return True to update the state of the Preference with the new value.
+         */
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
+            String stringValue = value.toString(); //new value user entered converted to string
             if (preference instanceof ListPreference) {
                 ListPreference listPreference = (ListPreference) preference;
                 int prefIndex = listPreference.findIndexOfValue(stringValue);
@@ -56,10 +66,12 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
-        /*Now we need to define the bindPreferenceSummaryToValue() helper method to set the current
+        /**
+         * Now we need to define the bindPreferenceSummaryToValue() helper method to set the current
         // EarhtquakePreferenceFragment instance as the listener on each preference. We also read the current value of the
         // preference stored in the SharedPreferences on the device, and display that in the preference summary
-        (so that the user can see the current value of the preference).*/
+        (so that the user can see the current value of the preference).
+         */
         private void bindPreferenceSummaryToValue(Preference preference) {
             preference.setOnPreferenceChangeListener(this);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());

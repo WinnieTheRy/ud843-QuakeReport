@@ -174,6 +174,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        //if the item icon has been clicked they would be equal
         if (id == R.id.action_settings) { //the id of the item in the menu xml
             Intent settingsIntent = new Intent(this, SettingsActivity.class); //starts the settings activity class when the icon is clicked
             startActivity(settingsIntent);
