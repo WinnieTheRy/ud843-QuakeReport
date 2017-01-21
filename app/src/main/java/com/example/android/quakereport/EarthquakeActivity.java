@@ -163,7 +163,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     }
 
 
-    //Menu Item:
+    /**Menu Item that is inflated in the main activity for the user to change settings: */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //inflates the icon at the top right
@@ -174,6 +174,14 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        // Can use a switch case as well:
+//        switch (id) {
+//            case R.id.action_settings:
+//                Intent settingsIntent = new Intent(this, SettingsActivity.class); //starts the settings activity class when the icon is clicked
+//                startActivity(settingsIntent);
+//                return true;
+//        }
 
         //if the item icon has been clicked they would be equal
         if (id == R.id.action_settings) { //the id of the item in the menu xml
