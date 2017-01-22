@@ -74,17 +74,17 @@ public class EarthquakeAdapter extends ArrayAdapter<EarthquakeData> {
             //Splitting the string at the of position, and assigning it to an array
             String[] split = currentEarthquake.getmCityName().split(LOCATION_SEPERATOR);
 
-            //Assinging the fist half of the string to split[0]
+            //Assigning the fist half of the string to split[0]
             splitLocationOffset = split[split.length - 2] + LOCATION_SEPERATOR;
 
-            //Assinging the second half of the string to split[1]
+            //Assigning the second half of the string to split[1]
             splitPirmaryLocation = split[split.length - 1];
         } else {
             //since there is no "of" we assign location ofset to "Near the" and
             //just set the primary location to the city name
             splitLocationOffset = getContext().getString(R.string.near_the);
 
-            //Assinging the second half of the string to the location
+            //Assigning the second half of the string to the location
             splitPirmaryLocation = currentEarthquake.getmCityName();
         }
 
